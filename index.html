@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purrfect Bites Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --cream:    #FFF8F0;
+      --pink:     #FFB5C8;
+      --pink-d:   #ff8fab;
+      --orange:   #FF8C42;
+      --orange-d: #e07330;
+      --brown:    #92400E;
+      --amber:    #B45309;
+      --text:     #78350F;
+      --green:    #A8C5A0;
+      --purple:   #C9B8E8;
+      --white:    #FFFFFF;
+      --shadow:   0 8px 32px rgba(146,64,14,.13);
+      --radius:   24px;
+      --radius-sm:12px;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Comic Neue', cursive;
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a  { text-decoration: none; color: inherit; }
+
+    /* ── Animations ── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-4deg); }
+      50%       { transform: rotate(4deg); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      40%       { transform: translateY(-10px); }
+      70%       { transform: translateY(-4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── Utility ── */
+    .section { padding: 80px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      color: var(--brown);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center;
+      font-size: 1.15rem;
+      color: var(--amber);
+      margin-bottom: 52px;
+      font-weight: 700;
+    }
+    .paw-divider {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0 40px;
+    }
+    .paw-divider svg { width: 28px; height: 28px; fill: var(--pink); animation: bounce 2s infinite; }
+    .paw-divider svg:nth-child(2) { animation-delay: .2s; fill: var(--orange); }
+    .paw-divider svg:nth-child(3) { animation-delay: .4s; fill: var(--purple); }
+
+    /* ── Navbar ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--white);
+      box-shadow: 0 4px 20px rgba(146,64,14,.10);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 74px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--brown);
+    }
+    .nav-logo svg { width: 44px; height: 44px; animation: wiggle 3s ease-in-out infinite; }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      transition: background .2s, color .2s;
+      cursor: pointer;
+      display: block;
+    }
+    .nav-links a:hover, .nav-links a:focus-visible {
+      background: var(--pink);
+      color: var(--brown);
+      outline: none;
+    }
+    .nav-cta {
+      background: var(--orange) !important;
+      color: var(--white) !important;
+      border-radius: var(--radius-sm) !important;
+    }
+    .nav-cta:hover { background: var(--orange-d) !important; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+    }
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 3px;
+      background: var(--brown);
+      border-radius: 4px;
+    }
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 74px; left: 0; right: 0;
+        background: var(--white);
+        padding: 16px 24px 24px;
+        box-shadow: 0 8px 24px rgba(146,64,14,.12);
+        gap: 4px;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.2rem; padding: 14px 18px; }
+    }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(135deg, #fff0f5 0%, #FFF8F0 50%, #fff7e6 100%);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      min-height: 88vh;
+      padding: 60px 24px;
+      gap: 40px;
+    }
+    .hero-text { animation: fadeUp .8s ease both; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--pink);
+      color: var(--brown);
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 8px 20px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 800;
+      color: var(--brown);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero-title span { color: var(--orange); }
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--amber);
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 16px 32px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 6px 20px rgba(255,140,66,.35);
+    }
+    .btn-primary:hover { background: var(--orange-d); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--brown);
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 14px 30px;
+      border-radius: 999px;
+      border: 3px solid var(--brown);
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .btn-secondary:hover { background: var(--cream); transform: translateY(-2px); }
+    .hero-image-wrap { position: relative; animation: fadeUp .8s .2s ease both; }
+    .hero-img {
+      width: 100%;
+      max-width: 520px;
+      height: 480px;
+      object-fit: cover;
+      border-radius: 40px 40px 80px 40px;
+      box-shadow: var(--shadow);
+      margin: 0 auto;
+    }
+    .hero-float-card {
+      position: absolute;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 14px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--brown);
+    }
+    .hero-float-card.card-1 { bottom: 40px; left: -20px; animation: float 4s ease-in-out infinite; }
+    .hero-float-card.card-2 { top: 30px; right: -10px; animation: float 4s .8s ease-in-out infinite; }
+    .hero-float-card svg { width: 32px; height: 32px; flex-shrink: 0; }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .35;
+      pointer-events: none;
+    }
+    .blob-1 { width: 320px; height: 320px; background: var(--pink);  top: -80px; left: -80px; }
+    .blob-2 { width: 280px; height: 280px; background: var(--purple); bottom: -60px; right: -60px; }
+    .blob-3 { width: 200px; height: 200px; background: var(--green); top: 40%; right: 10%; }
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; min-height: auto; padding: 50px 20px; }
+      .hero-img { height: 300px; border-radius: 28px; }
+      .hero-btns { justify-content: center; }
+      .hero-float-card.card-1 { bottom: 10px; left: 0; font-size: 0.8rem; padding: 10px 14px; }
+      .hero-float-card.card-2 { top: 10px; right: 0; font-size: 0.8rem; padding: 10px 14px; }
+      .hero-desc { margin: 0 auto 36px; }
+    }
+
+    /* ── Features strip ── */
+    .features-strip { background: var(--brown); padding: 28px 24px; }
+    .features-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--cream);
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .feature-item svg { width: 32px; height: 32px; fill: var(--pink); flex-shrink: 0; }
+
+    /* ── About ── */
+    #about { background: var(--white); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-imgs { position: relative; height: 480px; }
+    .about-img-main {
+      width: 78%;
+      height: 380px;
+      border-radius: var(--radius);
+      object-fit: cover;
+      box-shadow: var(--shadow);
+      position: absolute;
+      top: 0; left: 0;
+    }
+    .about-img-sec {
+      width: 55%;
+      height: 240px;
+      border-radius: var(--radius);
+      object-fit: cover;
+      box-shadow: var(--shadow);
+      position: absolute;
+      bottom: 0; right: 0;
+      border: 6px solid var(--white);
+    }
+    .about-text h2 {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--brown);
+      margin-bottom: 16px;
+    }
+    .about-text p { font-size: 1.1rem; margin-bottom: 20px; color: var(--text); }
+    .about-stats { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 32px; }
+    .stat-box {
+      background: var(--cream);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      text-align: center;
+      border-bottom: 4px solid var(--orange);
+    }
+    .stat-box strong {
+      display: block;
+      font-family: 'Baloo 2', cursive;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--orange);
+    }
+    .stat-box span { font-size: 0.95rem; color: var(--amber); font-weight: 700; }
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-imgs { height: 300px; }
+      .about-img-main { height: 240px; }
+      .about-img-sec  { height: 160px; }
+    }
+
+    /* ── Menu ── */
+    #menu { background: linear-gradient(180deg, #FFF8F0 0%, #fff0f7 100%); }
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+    }
+    .menu-tab {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 24px;
+      border-radius: 999px;
+      border: 2.5px solid var(--brown);
+      background: transparent;
+      color: var(--brown);
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .menu-tab.active, .menu-tab:hover { background: var(--brown); color: var(--white); }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+    .menu-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .menu-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(146,64,14,.18); }
+    .menu-card-img { height: 200px; overflow: hidden; position: relative; }
+    .menu-card-img img { height: 100%; transition: transform .4s; }
+    .menu-card:hover .menu-card-img img { transform: scale(1.07); }
+    .menu-card-badge {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: var(--pink);
+      color: var(--brown);
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .menu-card-body { padding: 20px; }
+    .menu-card-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--brown);
+      margin-bottom: 6px;
+    }
+    .menu-card-desc { font-size: 0.95rem; color: var(--amber); margin-bottom: 16px; }
+    .menu-card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .menu-price {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--orange);
+    }
+    .menu-order-btn {
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      padding: 8px 20px;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .menu-order-btn:hover { background: var(--orange-d); transform: scale(1.05); }
+
+    /* ── Cats ── */
+    #cats { background: var(--white); }
+    .cats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .cat-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: transform .25s;
+      cursor: pointer;
+    }
+    .cat-card:hover { transform: translateY(-6px) rotate(1deg); }
+    .cat-card img { height: 220px; object-fit: cover; }
+    .cat-card-body { padding: 18px 16px 22px; }
+    .cat-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--brown);
+      margin-bottom: 4px;
+    }
+    .cat-desc { font-size: 0.95rem; color: var(--amber); }
+    @media (max-width: 768px) { .cats-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .cats-grid { grid-template-columns: 1fr; } }
+
+    /* ── Gallery ── */
+    #gallery { background: linear-gradient(180deg, #fff0f7 0%, #FFF8F0 100%); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 200px;
+      gap: 16px;
+    }
+    .gallery-item {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(146,64,14,.10);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .gallery-item:hover { transform: scale(1.03); box-shadow: 0 12px 32px rgba(146,64,14,.18); }
+    .gallery-item img { height: 100%; width: 100%; object-fit: cover; }
+    .gallery-item.tall { grid-row: 1 / 3; }
+    @media (max-width: 900px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+      .gallery-item.tall { grid-row: auto; }
+      .gallery-item img { height: 200px; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item img { height: 200px; }
+    }
+
+    /* ── Reviews ── */
+    #reviews { background: var(--white); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .review-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+    }
+    .review-quote {
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--pink);
+      font-family: Georgia, serif;
+      margin-bottom: 8px;
+    }
+    .review-text { font-size: 1.05rem; color: var(--text); margin-bottom: 24px; }
+    .review-author { display: flex; align-items: center; gap: 14px; }
+    .review-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); flex-shrink: 0; }
+    .review-name { font-family: 'Baloo 2', cursive; font-weight: 700; color: var(--brown); font-size: 1rem; }
+    .review-role { font-size: 0.88rem; color: var(--amber); }
+    .stars { color: var(--orange); font-size: 1.2rem; margin-bottom: 14px; }
+
+    /* ── Hours Banner ── */
+    .hours-banner { background: var(--pink); padding: 36px 24px; text-align: center; }
+    .hours-banner h3 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--brown);
+      margin-bottom: 16px;
+    }
+    .hours-grid { display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; }
+    .hours-item { font-family: 'Baloo 2', cursive; font-weight: 700; color: var(--brown); font-size: 1rem; }
+    .hours-item span { display: block; font-size: 1.2rem; }
+
+    /* ── Contact ── */
+    #contact { background: linear-gradient(135deg, #fff0f5 0%, #FFF8F0 100%); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-info h2 {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      color: var(--brown);
+      margin-bottom: 16px;
+    }
+    .contact-info p { font-size: 1.05rem; color: var(--text); margin-bottom: 32px; }
+    .contact-item { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+    .contact-icon {
+      width: 48px; height: 48px;
+      background: var(--pink);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon svg { width: 24px; height: 24px; fill: var(--brown); }
+    .contact-label { font-family: 'Baloo 2', cursive; font-weight: 700; color: var(--brown); font-size: 1rem; margin-bottom: 2px; }
+    .contact-val { font-size: 1rem; color: var(--text); }
+    .contact-form { background: var(--white); border-radius: var(--radius); padding: 40px 36px; box-shadow: var(--shadow); }
+    .form-title { font-family: 'Baloo 2', cursive; font-size: 1.6rem; font-weight: 800; color: var(--brown); margin-bottom: 28px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-family: 'Baloo 2', cursive; font-weight: 700; color: var(--brown); margin-bottom: 8px; font-size: 1rem; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2.5px solid #e8d5c4;
+      border-radius: var(--radius-sm);
+      font-family: 'Comic Neue', cursive;
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--cream);
+      transition: border-color .2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--orange); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .form-submit:hover { background: var(--orange-d); transform: translateY(-2px); }
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-form { padding: 28px 20px; }
+    }
+
+    /* ── Footer ── */
+    footer { background: var(--brown); color: var(--cream); padding: 52px 24px 28px; text-align: center; }
+    .footer-logo {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .footer-logo svg { width: 40px; height: 40px; fill: var(--pink); }
+    .footer-tagline { font-size: 1rem; opacity: .8; margin-bottom: 28px; }
+    .footer-links { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 28px; list-style: none; }
+    .footer-links a { font-family: 'Baloo 2', cursive; font-weight: 700; opacity: .85; transition: opacity .2s, color .2s; font-size: 1rem; }
+    .footer-links a:hover { opacity: 1; color: var(--pink); }
+    .footer-copy { font-size: 0.9rem; opacity: .6; }
+
+    /* ── Cat paw background pattern ── */
+    .paw-bg {
+      position: relative;
+    }
+    .paw-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 24 24'%3E%3Cpath fill='%2392400E' d='M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 80px 80px;
+      z-index: 0;
+    }
+    .paw-bg > * { position: relative; z-index: 1; }
+
+    /* ── Cat photo strip ── */
+    .cat-strip {
+      display: flex;
+      gap: 0;
+      height: 200px;
+      overflow: hidden;
+    }
+    .cat-strip-img {
+      flex: 1;
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      transition: flex .4s ease;
+      cursor: pointer;
+    }
+    .cat-strip-img:hover { flex: 2.5; }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 36px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0,0,0,.2);
+      text-align: center;
+      animation: fadeUp .4s ease;
+      position: relative;
+    }
+    .modal h3 { font-family: 'Baloo 2', cursive; font-size: 1.6rem; font-weight: 800; color: var(--brown); margin-bottom: 8px; }
+    .modal p { color: var(--amber); font-size: 1rem; margin-bottom: 24px; }
+    .modal-close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none;
+      font-size: 2rem; cursor: pointer; color: var(--text); line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo" aria-label="Purrfect Bites Cafe home">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="32" cy="38" rx="22" ry="19" fill="#FFB5C8"/>
+        <ellipse cx="32" cy="38" rx="13" ry="12" fill="#FFF8F0"/>
+        <circle cx="25" cy="36" r="3" fill="#92400E"/>
+        <circle cx="39" cy="36" r="3" fill="#92400E"/>
+        <ellipse cx="32" cy="41" rx="4" ry="2.5" fill="#FF8C42"/>
+        <path d="M26 45 Q32 49 38 45" stroke="#92400E" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <line x1="10" y1="37" x2="22" y2="38" stroke="#92400E" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="10" y1="41" x2="22" y2="40" stroke="#92400E" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="42" y1="38" x2="54" y2="37" stroke="#92400E" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="42" y1="40" x2="54" y2="41" stroke="#92400E" stroke-width="1.5" stroke-linecap="round"/>
+        <polygon points="14,24 20,8 26,24" fill="#FFB5C8"/>
+        <polygon points="16,23 20,11 24,23" fill="#C9B8E8"/>
+        <polygon points="38,24 44,8 50,24" fill="#FFB5C8"/>
+        <polygon points="40,23 44,11 48,23" fill="#C9B8E8"/>
+      </svg>
+      Purrfect Bites
+    </a>
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#cats">Our Cats</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact" class="nav-cta">Visit Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" aria-label="Welcome">
+  <div class="blob blob-1" aria-hidden="true"></div>
+  <div class="blob blob-2" aria-hidden="true"></div>
+  <div class="blob blob-3" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#92400E" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        Est. 2018 · Open Every Day
+      </div>
+      <h1 class="hero-title">
+        Where Every Bite<br/>is <span>Purrfectly</span><br/>Delightful!
+      </h1>
+      <p class="hero-desc">
+        A cozy cat-themed bakery where adorable rescue kitties roam freely while you enjoy freshly baked pastries, warm teas, and rich coffees. Magical for all ages!
+      </p>
+      <div class="hero-btns">
+        <a href="#menu" class="btn-primary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
+          See Our Menu
+        </a>
+        <a href="#contact" class="btn-secondary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#92400E" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          Find Us
+        </a>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <img class="hero-img"
+        src="https://images.unsplash.com/photo-1548366086-7f1b76106622?w=800&q=80"
+        alt="Adorable cat sitting in a cozy cafe setting"
+        loading="eager" />
+      <div class="hero-float-card card-1" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#FF8C42"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
+        50+ Fresh Baked Daily
+      </div>
+      <div class="hero-float-card card-2" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#FFB5C8"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        12 Resident Cats
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<div class="features-strip" aria-label="Our highlights">
+  <div class="features-inner">
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
+      Freshly Baked Every Morning
+    </div>
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+      Safe &amp; Clean · Cat-Certified
+    </div>
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      Reservations Welcome
+    </div>
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      Family &amp; Elderly Friendly
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="section" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-imgs reveal">
+        <img class="about-img-main"
+          src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=700&q=80"
+          alt="Warm and cozy bakery cafe interior with wooden tables" loading="lazy"/>
+        <img class="about-img-sec"
+          src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80"
+          alt="Cat sitting comfortably inside the cafe" loading="lazy"/>
+      </div>
+      <div class="about-text reveal reveal-delay-2">
+        <h2 id="about-title">A Warm Hug in Every Visit</h2>
+        <p>Purrfect Bites Cafe was born from a simple dream — a place where the smell of fresh croissants mingles with the gentle purring of cats, where grandparents and grandchildren make memories together.</p>
+        <p>Our 12 resident cats are all rescue kitties who found their forever home right here. They roam freely, cuddle with guests, and somehow make every muffin taste even better!</p>
+        <p>Everything is baked fresh each morning — from flaky croissants to moist carrot cake — using traditional recipes passed down through generations.</p>
+        <div class="about-stats">
+          <div class="stat-box"><strong>12</strong><span>Resident Cats</span></div>
+          <div class="stat-box"><strong>50+</strong><span>Daily Baked Items</span></div>
+          <div class="stat-box"><strong>6 yrs</strong><span>Making Memories</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="section paw-bg" aria-labelledby="menu-title">
+  <div class="container">
+    <h2 class="section-title" id="menu-title">Our Purrfect Menu</h2>
+    <p class="section-sub">Everything baked fresh with love — and a sprinkle of cat magic</p>
+    <div class="paw-divider" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+    </div>
+    <div class="menu-tabs" role="tablist" aria-label="Menu categories">
+      <button class="menu-tab active" data-filter="all" role="tab" aria-selected="true">All Items</button>
+      <button class="menu-tab" data-filter="bakery" role="tab" aria-selected="false">Bakery</button>
+      <button class="menu-tab" data-filter="cakes" role="tab" aria-selected="false">Cakes</button>
+      <button class="menu-tab" data-filter="drinks" role="tab" aria-selected="false">Drinks</button>
+    </div>
+    <div class="menu-grid" id="menuGrid">
+
+      <div class="menu-card reveal" data-category="bakery">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80" alt="Golden buttery croissant" loading="lazy"/>
+          <span class="menu-card-badge">Bestseller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Whisker Croissant</div>
+          <div class="menu-card-desc">Buttery, flaky, golden — with a tiny paw stamp pressed on top</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$3.50</span>
+            <button class="menu-order-btn" onclick="openModal('Whisker Croissant', '$3.50')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-1" data-category="bakery">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=600&q=80" alt="Fresh blueberry muffin" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Purring Blueberry Muffin</div>
+          <div class="menu-card-desc">Moist muffin bursting with fresh blueberries and lemon zest</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$3.00</span>
+            <button class="menu-order-btn" onclick="openModal('Purring Blueberry Muffin', '$3.00')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-2" data-category="bakery">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=80" alt="Decorated paw print sugar cookies" loading="lazy"/>
+          <span class="menu-card-badge">Kids' Fave</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Paw Print Cookies</div>
+          <div class="menu-card-desc">Soft sugar cookies pressed with a paw stamp and glazed pink</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$2.50</span>
+            <button class="menu-order-btn" onclick="openModal('Paw Print Cookies', '$2.50')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-3" data-category="bakery">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=600&q=80" alt="Warm cinnamon roll with frosting" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Kitty Cinnamon Rolls</div>
+          <div class="menu-card-desc">Warm, gooey rolls with cinnamon swirl and cream cheese frosting</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$4.00</span>
+            <button class="menu-order-btn" onclick="openModal('Kitty Cinnamon Rolls', '$4.00')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal" data-category="cakes">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80" alt="Vanilla layer cake with cream" loading="lazy"/>
+          <span class="menu-card-badge">Popular</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Meow Vanilla Cake</div>
+          <div class="menu-card-desc">Three layers of vanilla sponge with strawberry jam and whipped cream</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$6.50</span>
+            <button class="menu-order-btn" onclick="openModal('Meow Vanilla Cake', '$6.50')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-1" data-category="cakes">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=600&q=80" alt="Moist carrot cake slice with cream cheese frosting" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Tabby's Carrot Cake</div>
+          <div class="menu-card-desc">Moist carrot cake with walnuts and silky cream cheese frosting</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$5.50</span>
+            <button class="menu-order-btn" onclick="openModal('Tabby Carrot Cake', '$5.50')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-2" data-category="cakes">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80" alt="Pink strawberry cheesecake" loading="lazy"/>
+          <span class="menu-card-badge">New!</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Calico Cheesecake</div>
+          <div class="menu-card-desc">Creamy New York style cheesecake with a fresh strawberry topping</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$6.00</span>
+            <button class="menu-order-btn" onclick="openModal('Calico Cheesecake', '$6.00')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal" data-category="drinks">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=600&q=80" alt="Steaming cup of chamomile tea" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Calico Chamomile Tea</div>
+          <div class="menu-card-desc">Soothing chamomile with honey and a slice of fresh lemon</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$3.50</span>
+            <button class="menu-order-btn" onclick="openModal('Calico Chamomile Tea', '$3.50')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-1" data-category="drinks">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80" alt="Latte with beautiful cat latte art" loading="lazy"/>
+          <span class="menu-card-badge">Cat Art!</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Purrfect Latte</div>
+          <div class="menu-card-desc">Smooth espresso with steamed milk — served with a cat latte art</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$4.50</span>
+            <button class="menu-order-btn" onclick="openModal('Purrfect Latte', '$4.50')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal reveal-delay-2" data-category="drinks">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80" alt="Pink strawberry milkshake with whipped cream" loading="lazy"/>
+          <span class="menu-card-badge">Kids' Fave</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-title">Kitten's Strawberry Shake</div>
+          <div class="menu-card-desc">Creamy fresh strawberry milkshake with whipped cream on top</div>
+          <div class="menu-card-footer">
+            <span class="menu-price">$5.00</span>
+            <button class="menu-order-btn" onclick="openModal('Kitten Strawberry Shake', '$5.00')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CAT PHOTO STRIP -->
+<div class="cat-strip" aria-label="Our cats at the cafe">
+  <img class="cat-strip-img" src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=400&q=80" alt="Orange tabby cat" loading="lazy"/>
+  <img class="cat-strip-img" src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&q=80" alt="Grey cat close-up" loading="lazy"/>
+  <img class="cat-strip-img" src="https://images.unsplash.com/photo-1471879832106-c7ab9e0cee23?w=400&q=80" alt="Striped tabby cat" loading="lazy"/>
+  <img class="cat-strip-img" src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&q=80" alt="Fluffy kitten" loading="lazy"/>
+  <img class="cat-strip-img" src="https://images.unsplash.com/photo-1548366086-7f1b76106622?w=400&q=80" alt="Black and white cat" loading="lazy"/>
+</div>
+
+<!-- OUR CATS -->
+<section id="cats" class="section paw-bg" aria-labelledby="cats-title">
+  <div class="container">
+    <h2 class="section-title" id="cats-title">Meet Our Furry Staff</h2>
+    <p class="section-sub">Our 12 rescue cats are the real managers around here!</p>
+    <div class="paw-divider" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+    </div>
+    <div class="cats-grid">
+      <div class="cat-card reveal">
+        <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&q=80" alt="Orange tabby cat named Biscuit" loading="lazy"/>
+        <div class="cat-card-body">
+          <div class="cat-name">Biscuit</div>
+          <div class="cat-desc">Chief Taste Tester · Loves napping on windowsills</div>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80" alt="Grey fluffy cat named Mochi" loading="lazy"/>
+        <div class="cat-card-body">
+          <div class="cat-name">Mochi</div>
+          <div class="cat-desc">Head of Cuddles · Will sit on your book</div>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1548366086-7f1b76106622?w=500&q=80" alt="White and black cat named Cookie" loading="lazy"/>
+        <div class="cat-card-body">
+          <div class="cat-name">Cookie</div>
+          <div class="cat-desc">Purring Expert · Loves children the most</div>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=500&q=80" alt="Fluffy long-haired cat named Marmalade" loading="lazy"/>
+        <div class="cat-card-body">
+          <div class="cat-name">Marmalade</div>
+          <div class="cat-desc">Senior Manager · 8 years young!</div>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80" alt="Curious ginger cat named Cinnamon" loading="lazy"/>
+        <div class="cat-card-body">
+          <div class="cat-name">Cinnamon</div>
+          <div class="cat-desc">Greeter Cat · First to say hello!</div>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=500&q=80" alt="Tiny kitten named Muffin" loading="lazy"/>
+        <div class="cat-card-body">
+          <div class="cat-name">Muffin</div>
+          <div class="cat-desc">Newest Recruit · Named after her fluffiness</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section" aria-labelledby="gallery-title">
+  <div class="container">
+    <h2 class="section-title" id="gallery-title">A Peek Inside</h2>
+    <p class="section-sub">Every corner is a photo moment waiting to happen</p>
+    <div class="gallery-grid">
+      <div class="gallery-item tall reveal">
+        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80" alt="Cat looking directly at camera with big eyes" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80" alt="Grey fluffy cat lounging at the cafe" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80" alt="Ginger cat sitting on a cafe chair" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&q=80" alt="Latte with cat latte art in a pretty mug" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1561948955-570b270e7c36?w=500&q=80" alt="Fluffy white cat relaxing in the cafe" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&q=80" alt="Orange tabby cat being adorable" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&q=80" alt="Tiny curious kitten peeking over a surface" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80" alt="Beautiful cake display with decorations" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=500&q=80" alt="Fluffy long-haired cat resting peacefully" loading="lazy"/>
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1471879832106-c7ab9e0cee23?w=500&q=80" alt="Striped tabby cat with bright eyes" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="section" aria-labelledby="reviews-title">
+  <div class="container">
+    <h2 class="section-title" id="reviews-title">What Our Guests Say</h2>
+    <p class="section-sub">Love letters from our favourite humans</p>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="review-quote">&ldquo;</div>
+        <p class="review-text">I am 74 years old and this is my favourite place in the whole city. The cats remind me of my own cat, and the carrot cake is simply divine. I come every Tuesday!</p>
+        <div class="review-author">
+          <img class="review-avatar" src="https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?w=100&q=80" alt="Margaret T., regular guest" loading="lazy"/>
+          <div>
+            <div class="review-name">Margaret T.</div>
+            <div class="review-role">Tuesday Regular since 2019</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-1">
+        <div class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="review-quote">&ldquo;</div>
+        <p class="review-text">My grandchildren absolutely LOVE it here! They talk about the cats and the paw print cookies for weeks after each visit. It has become our special family tradition.</p>
+        <div class="review-author">
+          <img class="review-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Robert G., proud grandfather" loading="lazy"/>
+          <div>
+            <div class="review-name">Robert G.</div>
+            <div class="review-role">Proud Grandpa of Five</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="review-quote">&ldquo;</div>
+        <p class="review-text">Biscuit the cat sat on my lap the whole time! I didn't even mind missing my book club. The latte art was incredible, and the blueberry muffins are out of this world.</p>
+        <div class="review-author">
+          <img class="review-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Susan M., cat lover" loading="lazy"/>
+          <div>
+            <div class="review-name">Susan M.</div>
+            <div class="review-role">Cat Lover and Coffee Addict</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS BANNER -->
+<div class="hours-banner" aria-label="Opening hours">
+  <h3>We Are Open Every Day!</h3>
+  <div class="hours-grid">
+    <div class="hours-item">Mon &ndash; Fri<span>8:00 AM &ndash; 8:00 PM</span></div>
+    <div class="hours-item">Saturday<span>9:00 AM &ndash; 9:00 PM</span></div>
+    <div class="hours-item">Sunday<span>10:00 AM &ndash; 7:00 PM</span></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <div class="container">
+    <h2 class="section-title" id="contact-title">Come Say Meow!</h2>
+    <p class="section-sub">We would love to see you &mdash; reservations always welcome</p>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h2>Find Us &amp; Get In Touch</h2>
+        <p>Whether you want to book a table, plan a birthday party with the cats, or just say hello &mdash; we are always happy to chat!</p>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Our Address</div>
+            <div class="contact-val">42 Whisker Lane, Meow District<br/>Portland, OR 97201</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-val">(503) 555-MEOW &nbsp;&middot;&nbsp; (503) 555-6369</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">hello@purrfectbites.cafe</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form reveal reveal-delay-2">
+        <div class="form-title">Book a Table</div>
+        <form onsubmit="handleFormSubmit(event)" novalidate>
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Margaret Smith" required autocomplete="name"/>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="hello@example.com" required autocomplete="email"/>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(503) 555-0000" autocomplete="tel"/>
+          </div>
+          <div class="form-group">
+            <label for="guests">Number of Guests</label>
+            <select id="guests" name="guests">
+              <option value="1">Just me (1 guest)</option>
+              <option value="2">2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4" selected>4 guests</option>
+              <option value="5+">5 or more guests</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Special Requests or Message</label>
+            <textarea id="message" name="message" placeholder="Any special occasion? Dietary needs? Let us know!"></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submitBtn">Send My Reservation</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+    Purrfect Bites Cafe
+  </div>
+  <p class="footer-tagline">Where every bite is made with love &mdash; and a dash of cat magic.</p>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#cats">Our Cats</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <p class="footer-copy">&copy; 2026 Purrfect Bites Cafe &middot; Made with love for cats and humans alike</p>
+</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&#215;</button>
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="#FF8C42" style="margin:0 auto 12px" aria-hidden="true"><path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zm-7 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm14 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM8 18c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+    <h3 id="modalHeading">Purrfect Choice!</h3>
+    <p id="modalBody">Come visit us and enjoy your treat with our cats!</p>
+    <a href="#contact" class="btn-primary" style="display:inline-flex;justify-content:center;margin-top:8px;" onclick="closeModal()">Book a Table Now</a>
+  </div>
+</div>
+
+<script>
+  // Mobile nav
+  var hamburger = document.getElementById('hamburger');
+  var navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', function() {
+    var isOpen = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el) { observer.observe(el); });
+  } else {
+    revealEls.forEach(function(el) { el.classList.add('visible'); });
+  }
+
+  // Menu filter tabs
+  var tabs = document.querySelectorAll('.menu-tab');
+  var cards = document.querySelectorAll('.menu-card');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      var filter = tab.dataset.filter;
+      cards.forEach(function(card) {
+        card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+      });
+    });
+  });
+
+  // Modal
+  function openModal(name, price) {
+    document.getElementById('modalHeading').textContent = name + ' \u2014 ' + price;
+    document.getElementById('modalBody').textContent = 'Great taste! Come visit us and enjoy "' + name + '" with our resident cats purring by your side.';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Form submit
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    var btn = document.getElementById('submitBtn');
+    btn.textContent = 'Reservation Sent! We will be in touch soon!';
+    btn.style.background = '#A8C5A0';
+    btn.disabled = true;
+    setTimeout(function() {
+      btn.textContent = 'Send My Reservation';
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 4000);
+  }
+
+  // Active nav highlight on scroll
+  var allSections = document.querySelectorAll('section[id]');
+  var allNavAs = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', function() {
+    var current = '';
+    allSections.forEach(function(sec) {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+    });
+    allNavAs.forEach(function(a) {
+      var isActive = a.getAttribute('href') === '#' + current;
+      a.style.background = isActive ? 'var(--pink)' : '';
+      a.style.color = isActive ? 'var(--brown)' : '';
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>

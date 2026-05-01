@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Yasmin/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"animation accessibility elderly large font\" --domain ux -n 5)"
+    ]
+  }
+}
