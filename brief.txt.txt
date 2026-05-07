@@ -1,0 +1,107 @@
+Create a modern, cozy, and visually beautiful website for a cat café.
+
+The website should feel warm, cute, aesthetic, and inviting, but not childish. I want it to look like a real professional café website with a soft, cozy atmosphere.
+
+Website name: Purr & Pour Cat Café
+
+Main idea:
+This is a cat café where people can drink coffee, eat desserts, study, relax, and spend time with friendly cats. The design should make visitors feel calm, comfortable, and excited to visit.
+
+Style:
+- Cozy and modern
+- Soft pastel colors
+- Warm beige, cream, light brown, soft pink, and small dark accents
+- Elegant but cute
+- Minimalistic layout, not too crowded
+- Rounded cards and smooth sections
+- Beautiful typography
+- Soft shadows
+- Cat-themed details, but subtle and tasteful
+
+Pages/sections needed:
+
+1. Hero Section
+- Big beautiful hero section with a cozy café atmosphere
+- Include a headline like: “Sip Coffee. Meet Cats. Feel at Home.”
+- Short description about the café
+- Two buttons: “Book a Visit” and “Meet Our Cats”
+- Use an image/visual of a cozy café with cats, coffee cups, plants, and warm lighting
+
+2. About Section
+- Explain what the cat café is
+- Mention that visitors can enjoy drinks, desserts, and spend time with adoptable or friendly cats
+- Make the text natural and welcoming
+
+3. Meet Our Cats Section
+- Create cards for 4–6 cats
+- Each card should include:
+  - Cat name
+  - Short personality description
+  - Age
+  - Cute image placeholder
+Example cats:
+  - Luna: calm and loves naps
+  - Mochi: playful and curious
+  - Oliver: friendly and cuddly
+  - Daisy: shy but sweet
+
+4. Menu Section
+- Create a café menu with categories:
+  - Coffee
+  - Tea
+  - Desserts
+  - Seasonal drinks
+- Include example items and prices
+- Make it look clean and easy to read
+
+5. Booking / Visit Section
+- Explain how visits work
+- Include simple steps:
+  1. Choose a time
+  2. Order a drink
+  3. Meet the cats
+  4. Relax and enjoy
+- Add a “Reserve Your Spot” button
+
+6. Rules Section
+- Add a friendly rules section for visitors:
+  - Be gentle with cats
+  - Do not wake sleeping cats
+  - No flash photography
+  - Wash hands before entering
+  - Children must be supervised
+- Make it sound kind, not strict
+
+7. Gallery Section
+- Add a gallery layout with cozy café and cat photos
+- Use image placeholders if real images are not available
+
+8. Testimonials Section
+- Add 3 short customer reviews
+- Make them sound natural and friendly
+
+9. Contact / Location Section
+- Include address placeholder
+- Opening hours
+- Phone/email
+- Social media icons
+- Add a simple contact form
+
+10. Footer
+- Include logo/name
+- Navigation links
+- Social media links
+- Small cute sentence like “Made with coffee, cats, and love.”
+
+Functionality:
+- The website should be responsive for desktop and mobile
+- Add smooth hover effects
+- Buttons should look modern and rounded
+- Navigation bar should be sticky or clean at the top
+- Use clean HTML, CSS, and JavaScript if needed
+- Keep the code organized and easy to edit
+- Use realistic placeholder images or image sections
+- Make the final result look like a finished website, not a basic template
+
+Important:
+Do not make the website look too simple or empty. Add enough detail, spacing, sections, and visual elements so it looks polished and professional. The design should feel cozy, aesthetic, and memorable.
